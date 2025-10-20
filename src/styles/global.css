@@ -37,9 +37,9 @@ html {
   }
 
 
-  /* nav styles */
+  /* nav styles 
 
-.nav-links {
+ .nav-links {
   width: 100%;
   top: 5rem;
   left: 48px;
@@ -66,6 +66,8 @@ html {
 .expanded {
   display: unset;
 }
+
+*/
 
 @media screen and (min-width: 636px) {
   .nav-links {
