@@ -1,32 +1,94 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-const allPosts = Object.values(import.meta.glob('../posts/*.md', { eager: true }));
-const tags = [...new Set(allPosts.map((post: any) => post.frontmatter.tags).flat())];
-const pageTitle = "Tag Index";
+
+const allPosts = await getCollection('posts', ({ data }) => !data.draft);
+const tags = [...new Set(allPosts.flatMap((post) => post.data.tags))].sort();
+const pageTitle = "Tags";
 ---
+
 <BaseLayout pageTitle={pageTitle}>
-  <div class="tags">
-    {tags.map((tag) => (
-      <p class="tag"><a href={`/tags/${tag}`}>{tag}</a></p>
-    ))}
+  <div class="tags-container">
+    <p class="intro-text">Browse articles by topic</p>
+    <div class="tags">
+      {tags.map((tag) => {
+        const postCount = allPosts.filter(post => post.data.tags.includes(tag)).length;
+        return (
+          <a href={`/tags/${tag}`} class="tag-link">
+            <span class="tag-name">{tag}</span>
+            <span class="tag-count">{postCount}</span>
+          </a>
+        );
+      })}
+    </div>
   </div>
 </BaseLayout>
+
 <style>
-  a {
-    color: #00539F;
+  .tags-container {
+    max-width: 65ch;
+    margin: 2rem auto;
+    padding: 0 1rem;
+  }
+
+  .intro-text {
+    color: #555;
+    margin-bottom: 2rem;
+    font-size: 1.05rem;
   }
 
   .tags {
     display: flex;
     flex-wrap: wrap;
+    gap: 1rem;
   }
 
-  .tag {
-    margin: 0.25em;
-    border: dotted 1px #a1a1a1;
-    border-radius: .5em;
-    padding: .5em 1em;
-    font-size: 1.15em;
-    background-color: #F8FCFD;
+  .tag-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    background-color: #f5f5f5;
+    color: #00539F;
+    border: 1px solid #ddd;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    transition: all 0.2s;
+    font-weight: 500;
+  }
+
+  .tag-link:hover {
+    background-color: #e8f4f8;
+    border-color: #00539F;
+  }
+
+  .tag-name {
+    color: #1a1a1a;
+    font-weight: 600;
+  }
+
+  .tag-count {
+    display: inline-block;
+    background-color: #00539F;
+    color: white;
+    padding: 0.2rem 0.5rem;
+    border-radius: 1rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+  }
+
+  @media (max-width: 636px) {
+    .tags-container {
+      margin: 1rem 0;
+    }
+
+    .tags {
+      gap: 0.75rem;
+    }
+
+    .tag-link {
+      padding: 0.5rem 1rem;
+      font-size: 0.95rem;
+    }
   }
 </style>
