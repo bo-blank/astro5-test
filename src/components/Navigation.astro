@@ -1,11 +1,19 @@
 ---
 ---
-<div class="nav-links">
-    <a href="/" class="nav-link">Home</a>
-    <a href="/blog/" class="nav-link">Latest</a>
-    <a href="/categories/essay" class="nav-link">Essays</a>
-    <a href="/categories/article" class="nav-link">Articles</a>
-    <a href="/categories/review" class="nav-link">Reviews</a>
-    <a href="/categories/interview" class="nav-link">Interviews</a>
-    <a href="/about/" class="nav-link">About</a>
-</div>
+<nav class="nav-links" role="navigation">
+    <a href="/" class="nav-link" data-active-path="/">Home</a>
+    <a href="/blog/" class="nav-link" data-active-path="/blog/">Latest</a>
+
+    <!-- Content Category Dropdown -->
+    <div class="nav-section">
+        <span class="nav-label">Explore</span>
+        <div class="nav-submenu">
+            <a href="/categories/essay" class="nav-link">Essays</a>
+            <a href="/categories/article" class="nav-link">Articles</a>
+            <a href="/categories/review" class="nav-link">Reviews</a>
+            <a href="/categories/interview" class="nav-link">Interviews</a>
+        </div>
+    </div>
+
+    <a href="/about/" class="nav-link" data-active-path="/about/">About</a>
+</nav>

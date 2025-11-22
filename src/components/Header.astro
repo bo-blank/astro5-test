@@ -4,32 +4,56 @@ import Hamburger from './Hamburger.astro';
 import ThemeToggle from './ThemeToggle.astro';
 ---
 
-<header class="sticky top-0 z-50 bg-background/98 border-b border-border/30">
-    <!-- Top bar with subscription and search -->
-    <div class="border-b border-border/20 px-4 sm:px-6 lg:px-8 py-2 flex justify-end gap-4 text-xs">
-        <a href="#newsletter" class="text-muted-foreground hover:text-foreground transition-colors">
-            Subscribe
-        </a>
-        <button class="text-muted-foreground hover:text-foreground transition-colors">
-            Search
-        </button>
+<header class="sticky top-0 z-50 bg-background border-b border-border/20">
+    <!-- Top utility bar -->
+    <div class="px-4 sm:px-6 lg:px-8 py-2.5 flex justify-between items-center text-xs border-b border-border/15">
+        <div class="text-muted-foreground">
+            Your source for thoughtful essays and articles
+        </div>
+        <div class="flex items-center gap-5">
+            <a href="#newsletter" class="text-muted-foreground hover:text-foreground transition-colors font-medium">
+                Subscribe
+            </a>
+            <button class="text-muted-foreground hover:text-foreground transition-colors" aria-label="Search">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+            </button>
+        </div>
     </div>
 
     <!-- Main navigation bar -->
-    <nav class="mx-auto max-w-full px-4 sm:px-6 lg:px-8 flex items-center justify-between h-14">
-        <a href="/" class="text-2xl font-bold tracking-tight text-foreground hover:text-primary transition-colors duration-200">
-            Digital Divide
+    <nav class="mx-auto max-w-full px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
+        <!-- Logo -->
+        <a href="/" class="flex-shrink-0">
+            <div class="text-xl font-bold tracking-tight text-foreground hover:text-primary transition-colors duration-200">
+                Digital Divide
+            </div>
+            <div class="text-xs text-muted-foreground tracking-widest uppercase">Essays & Ideas</div>
         </a>
 
-        <div class="hidden lg:flex items-center gap-0">
+        <!-- Main navigation (hidden on mobile) -->
+        <div class="hidden lg:flex items-center">
             <Navigation />
         </div>
 
-        <div class="flex items-center gap-3">
+        <!-- Right side controls -->
+        <div class="flex items-center gap-4">
             <div class="lg:hidden">
                 <Hamburger />
             </div>
+            <div class="w-px h-6 bg-border/30 hidden sm:block"></div>
             <ThemeToggle />
         </div>
     </nav>
 </header>
+
+<style>
+    header {
+        background-color: rgb(255, 255, 255);
+    }
+
+    :global([data-theme='dark']) header {
+        background-color: rgb(20, 20, 20);
+    }
+</style>
