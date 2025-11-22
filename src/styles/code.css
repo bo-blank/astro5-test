@@ -2,31 +2,29 @@
 
 :root {
   /* Shiki colors for light mode */
-  --code-bg: #f5f5f5;
-  --code-fg: #24292e;
-  --code-comment: #6a737d;
-  --code-string: #032f62;
-  --code-number: #005cc5;
-  --code-keyword: #d73a49;
-  --code-function: #6f42c1;
-  --code-attr: #6f42c1;
+  --code-bg: hsl(240 5% 96%);
+  --code-fg: hsl(240 10% 5%);
+  --code-comment: hsl(240 5% 45%);
+  --code-string: hsl(210 100% 25%);
+  --code-number: hsl(210 100% 40%);
+  --code-keyword: hsl(0 70% 50%);
+  --code-function: hsl(270 50% 50%);
 }
 
 [data-theme='dark'] {
-  --code-bg: #0d1117;
-  --code-fg: #c9d1d9;
-  --code-comment: #8b949e;
-  --code-string: #79c0ff;
-  --code-number: #79c0ff;
-  --code-keyword: #ff7b72;
-  --code-function: #d2a8ff;
-  --code-attr: #79c0ff;
+  --code-bg: hsl(240 10% 10%);
+  --code-fg: hsl(0 0% 90%);
+  --code-comment: hsl(240 5% 55%);
+  --code-string: hsl(200 80% 70%);
+  --code-number: hsl(200 80% 70%);
+  --code-keyword: hsl(0 70% 70%);
+  --code-function: hsl(270 80% 80%);
 }
 
 /* Pre and code blocks */
 pre {
   background-color: var(--code-bg) !important;
-  border: 1px solid var(--color-border);
+  border: 1px solid hsl(var(--border));
   border-radius: 0.5rem;
   padding: 1rem;
   overflow-x: auto;
@@ -37,18 +35,18 @@ pre code {
   background: none;
   color: var(--code-fg);
   font-family: var(--font-mono);
-  font-size: 0.9em;
+  font-size: 0.875rem;
   line-height: 1.5;
   padding: 0;
 }
 
 /* Inline code */
 :not(pre) > code {
-  background-color: var(--code-bg);
-  color: var(--code-keyword);
+  background-color: hsl(var(--muted));
+  color: hsl(var(--foreground));
   padding: 0.2em 0.4em;
   border-radius: 0.25rem;
-  font-size: 0.9em;
+  font-size: 0.875rem;
   white-space: pre-wrap;
   word-break: break-word;
 }
@@ -60,7 +58,7 @@ pre code {
   overflow-x: auto;
   padding: 1rem;
   border-radius: 0.5rem;
-  border: 1px solid var(--color-border);
+  border: 1px solid hsl(var(--border));
   line-height: 1.5;
 }
 
@@ -70,7 +68,7 @@ pre code {
 
 .shiki code {
   font-family: var(--font-mono);
-  font-size: 0.9em;
+  font-size: 0.875rem;
 }
 
 /* Line numbers if needed */
@@ -89,19 +87,19 @@ pre code {
 
 /* Highlight specific lines */
 .shiki .line.highlight {
-  background-color: rgba(0, 0, 0, 0.1);
-  border-left: 3px solid var(--color-primary-500);
+  background-color: hsl(var(--primary) / 0.1);
+  border-left: 3px solid hsl(var(--primary));
   padding-left: 0.5em;
   margin-left: -0.5em;
 }
 
 [data-theme='dark'] .shiki .line.highlight {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: hsl(var(--primary) / 0.15);
 }
 
 /* Focus visible for accessibility */
 pre:focus-visible {
-  outline: 2px solid var(--color-primary-500);
+  outline: 2px solid hsl(var(--ring));
   outline-offset: 2px;
 }
 
@@ -111,37 +109,33 @@ pre::-webkit-scrollbar {
 }
 
 pre::-webkit-scrollbar-track {
-  background: var(--color-neutral-100);
+  background: hsl(var(--muted));
   border-radius: 4px;
 }
 
-[data-theme='dark'] pre::-webkit-scrollbar-track {
-  background: var(--color-neutral-800);
-}
-
 pre::-webkit-scrollbar-thumb {
-  background: var(--color-neutral-400);
+  background: hsl(var(--muted-foreground) / 0.4);
   border-radius: 4px;
 }
 
 pre::-webkit-scrollbar-thumb:hover {
-  background: var(--color-neutral-500);
+  background: hsl(var(--muted-foreground) / 0.6);
 }
 
 /* Responsive code blocks */
-@media (max-width: 636px) {
+@media (max-width: 640px) {
   pre {
     padding: 0.75rem;
-    font-size: 0.85em;
+    font-size: 0.8rem;
   }
 
   :not(pre) > code {
-    font-size: 0.85em;
+    font-size: 0.8rem;
   }
 
   .shiki {
     padding: 0.75rem;
-    font-size: 0.85em;
+    font-size: 0.8rem;
   }
 
   .shiki .line-number {
