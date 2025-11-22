@@ -2,44 +2,61 @@ import type { Config } from 'tailwindcss';
 
 const config: Config = {
   content: ['./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}'],
+  safelist: [
+    'bg-primary', 'bg-secondary', 'bg-muted', 'bg-card', 'bg-background',
+    'text-primary', 'text-secondary', 'text-muted', 'text-foreground', 'text-muted-foreground',
+    'text-primary-foreground', 'text-secondary-foreground',
+    'border-primary', 'border-secondary', 'border-border', 'border-muted',
+    'bg-primary/95', 'bg-primary/90', 'bg-primary/20', 'bg-primary/10', 'bg-primary/5',
+    'bg-secondary/30', 'bg-secondary/20', 'bg-secondary/10', 'bg-secondary/5',
+    'bg-destructive', 'text-destructive', 'border-destructive',
+    'hover:bg-primary', 'hover:bg-primary/90', 'hover:border-primary',
+    'hover:text-primary', 'hover:bg-secondary', 'hover:bg-secondary/50',
+    'text-destructive-foreground', 'bg-destructive/10',
+    'border-border/50', 'border-border/40', 'border-border/30', 'border-border/20',
+    'text-muted-foreground/90', 'text-muted-foreground/80', 'text-muted-foreground/70',
+    'hover:scale-110', 'group-hover:scale-105', 'group-hover:text-primary',
+    'hover:translate-x-1', 'hover:bg-primary/5', 'focus:border-primary', 'focus:ring-primary/50',
+    'from-primary/20', 'to-secondary/20', 'from-primary/10', 'via-secondary/10', 'to-primary/10',
+  ],
   darkMode: ['class', '[data-theme="dark"]'],
   theme: {
     extend: {
       // Digital Divide Design System
       colors: {
-        // shadcn/ui colors
-        border: 'hsl(var(--border))',
-        input: 'hsl(var(--input))',
-        ring: 'hsl(var(--ring))',
-        background: 'hsl(var(--background))',
-        foreground: 'hsl(var(--foreground))',
+        // shadcn/ui colors - using direct hex values
+        border: '#e5e5e5',
+        input: '#ffffff',
+        ring: '#030213',
+        background: '#ffffff',
+        foreground: '#030213',
         primary: {
-          DEFAULT: 'hsl(var(--primary))',
-          foreground: 'hsl(var(--primary-foreground))',
+          DEFAULT: '#030213',
+          foreground: '#ffffff',
         },
         secondary: {
-          DEFAULT: 'hsl(var(--secondary))',
-          foreground: 'hsl(var(--secondary-foreground))',
+          DEFAULT: '#f3f3f5',
+          foreground: '#030213',
         },
         destructive: {
-          DEFAULT: 'hsl(var(--destructive))',
-          foreground: 'hsl(var(--destructive-foreground))',
+          DEFAULT: '#d4183d',
+          foreground: '#ffffff',
         },
         muted: {
-          DEFAULT: 'hsl(var(--muted))',
-          foreground: 'hsl(var(--muted-foreground))',
+          DEFAULT: '#ececf0',
+          foreground: '#717182',
         },
         accent: {
-          DEFAULT: 'hsl(var(--accent))',
-          foreground: 'hsl(var(--accent-foreground))',
+          DEFAULT: '#e9ebef',
+          foreground: '#030213',
         },
         popover: {
-          DEFAULT: 'hsl(var(--popover))',
-          foreground: 'hsl(var(--popover-foreground))',
+          DEFAULT: '#ffffff',
+          foreground: '#030213',
         },
         card: {
-          DEFAULT: 'hsl(var(--card))',
-          foreground: 'hsl(var(--card-foreground))',
+          DEFAULT: '#ffffff',
+          foreground: '#030213',
         },
         chart: {
           '1': 'hsl(var(--chart-1))',

@@ -14,38 +14,51 @@ const readingTime = Math.ceil(post.body.split(/\s+/).length / 200);
 ---
 
 <BaseLayout pageTitle={title}>
-  <article class="post-container">
-    <header class="post-header">
-      <div class="post-meta">
-        <span class="category-badge">{category}</span>
-        <time datetime={pubDate.toISOString()}>
+  {image && (
+    <img src={image.url} alt={image.alt} class="w-full h-auto max-h-[500px] object-cover rounded-lg" />
+  )}
+  <article class="mx-auto max-w-prose px-4 sm:px-6 py-8 sm:py-12 animate-fade-in">
+    <header class="mb-8 sm:mb-12">
+      <div class="flex flex-wrap items-center gap-3 mb-4">
+        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-secondary/20 text-secondary">
+          {category}
+        </span>
+        <time datetime={pubDate.toISOString()} class="text-sm text-muted-foreground">
           {pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
         </time>
-        <span class="reading-time">{readingTime} min read</span>
+        <span class="text-sm text-muted-foreground">
+          {readingTime} min read
+        </span>
       </div>
 
-      <h1 class="post-title">{title}</h1>
+      <h1 class="text-4xl sm:text-5xl font-bold tracking-tight text-foreground mb-4 leading-tight">
+        {title}
+      </h1>
 
-      <p class="post-description">{description}</p>
+      <p class="text-lg sm:text-xl text-muted-foreground/90 italic leading-relaxed mb-6 max-w-2xl">
+        {description}
+      </p>
 
-      <div class="post-author">
-        <span>By {author}</span>
+      <div class="flex items-center gap-2 text-sm text-muted-foreground">
+        <span>By</span>
+        <span class="font-semibold text-foreground">{author}</span>
       </div>
-
-      {image && (
-        <img src={image.url} alt={image.alt} class="post-image" />
-      )}
     </header>
 
-    <div class="post-content">
+    <div class="prose prose-sm sm:prose-base prose-invert max-w-none">
       <slot />
     </div>
 
     {tags.length > 0 && (
-      <footer class="post-footer">
-        <div class="tags">
+      <footer class="mt-12 sm:mt-16 pt-8 border-t border-border/30">
+        <div class="flex flex-wrap gap-2">
           {tags.map((tag: string) => (
-            <a href={`/tags/${tag}`} class="tag">{tag}</a>
+            <a
+              href={`/tags/${tag}`}
+              class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium bg-secondary/10 text-secondary hover:bg-secondary/20 border border-secondary/30 hover:border-secondary/50 transition-all duration-200"
+            >
+              #{tag}
+            </a>
           ))}
         </div>
       </footer>
@@ -54,188 +67,88 @@ const readingTime = Math.ceil(post.body.split(/\s+/).length / 200);
 </BaseLayout>
 
 <style>
-  .post-container {
-    max-width: 65ch;
-    margin: 2rem auto;
-    padding: 0 1rem;
-  }
-
-  .post-header {
-    margin-bottom: 3rem;
-  }
-
-  .post-meta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    font-size: 0.95rem;
-    color: #666;
-    margin-bottom: 1.5rem;
-  }
-
-  .category-badge {
-    display: inline-block;
-    background-color: #e8f4f8;
-    color: #0c5f7f;
-    padding: 0.25rem 0.75rem;
-    border-radius: 0.25rem;
-    font-weight: 600;
-    font-size: 0.85rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-
-  .post-title {
-    font-size: 2.5rem;
-    line-height: 1.2;
-    margin: 1.5rem 0 1rem 0;
-    color: #1a1a1a;
+  /* Typography improvements for prose content */
+  :global(.prose h2) {
+    font-size: 1.875rem;
     font-weight: 700;
-  }
-
-  .post-description {
-    font-size: 1.25rem;
-    line-height: 1.5;
-    color: #555;
-    margin: 1rem 0 1.5rem 0;
-    font-style: italic;
-  }
-
-  .post-author {
-    color: #888;
     margin: 1.5rem 0;
-    font-size: 0.95rem;
   }
 
-  .post-image {
-    width: 100%;
-    height: auto;
-    border-radius: 0.5rem;
-    margin: 2rem 0;
-    display: block;
-  }
-
-  .post-content {
-    font-size: 1.05rem;
-    line-height: 1.8;
-    color: #333;
-  }
-
-  .post-footer {
-    margin-top: 3rem;
-    padding-top: 2rem;
-    border-top: 1px solid #e5e5e5;
-  }
-
-  .tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-  }
-
-  .tag {
-    display: inline-block;
-    padding: 0.5rem 1rem;
-    background-color: #f5f5f5;
-    color: #00539F;
-    border: 1px solid #ddd;
-    border-radius: 0.25rem;
-    text-decoration: none;
-    font-size: 0.9rem;
-    transition: background-color 0.2s, border-color 0.2s;
-  }
-
-  .tag:hover {
-    background-color: #e8f4f8;
-    border-color: #00539F;
-  }
-
-  /* Typography improvements for readability */
-  :global(.post-content h2) {
-    font-size: 1.75rem;
-    margin: 2rem 0 1rem 0;
-    font-weight: 700;
-    color: #1a1a1a;
-  }
-
-  :global(.post-content h3) {
-    font-size: 1.35rem;
-    margin: 1.5rem 0 0.75rem 0;
+  :global(.prose h3) {
+    font-size: 1.5rem;
     font-weight: 600;
-    color: #1a1a1a;
-  }
-
-  :global(.post-content p) {
     margin: 1rem 0;
   }
 
-  :global(.post-content ul),
-  :global(.post-content ol) {
+  :global(.prose p) {
     margin: 1rem 0;
-    padding-left: 2rem;
+    line-height: 1.75;
   }
 
-  :global(.post-content li) {
+  :global(.prose ul),
+  :global(.prose ol) {
+    margin: 1rem 0;
+    margin-left: 1.5rem;
+  }
+
+  :global(.prose li) {
     margin: 0.5rem 0;
   }
 
-  :global(.post-content a) {
-    color: #00539F;
+  :global(.prose a) {
+    color: hsl(var(--primary));
+    text-decoration: underline;
+    transition: all 0.2s;
+  }
+
+  :global(.prose a:hover) {
     text-decoration: none;
-    border-bottom: 1px solid #e0e0e0;
-    transition: border-color 0.2s;
   }
 
-  :global(.post-content a:hover) {
-    border-bottom-color: #00539F;
-  }
-
-  :global(.post-content blockquote) {
+  :global(.prose blockquote) {
     margin: 1.5rem 0;
-    padding-left: 1.5rem;
-    border-left: 4px solid #00539F;
-    color: #666;
+    padding-left: 1rem;
+    border-left: 4px solid hsl(var(--primary) / 0.5);
+    color: hsl(var(--muted-foreground));
     font-style: italic;
   }
 
-  :global(.post-content code) {
-    background-color: #f5f5f5;
-    padding: 0.2rem 0.4rem;
-    border-radius: 0.25rem;
+  :global(.prose code) {
+    background-color: hsl(var(--secondary) / 0.2);
+    padding: 0.375rem 0.75rem;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
     font-family: 'Courier New', monospace;
-    font-size: 0.9em;
   }
 
-  :global(.post-content pre) {
-    background-color: #f5f5f5;
+  :global(.prose pre) {
+    background-color: hsl(var(--secondary) / 0.2);
     padding: 1rem;
     border-radius: 0.5rem;
     overflow-x: auto;
     margin: 1rem 0;
   }
 
-  :global(.post-content pre code) {
+  :global(.prose pre code) {
     background-color: transparent;
     padding: 0;
     border-radius: 0;
   }
 
-  @media (max-width: 636px) {
-    .post-container {
-      margin: 1rem 0;
-    }
+  :global(.prose table) {
+    width: 100%;
+    margin: 1rem 0;
+    border-collapse: collapse;
+  }
 
-    .post-title {
-      font-size: 1.75rem;
-    }
+  :global(.prose th),
+  :global(.prose td) {
+    border: 1px solid hsl(var(--border) / 0.5);
+    padding: 0.5rem 1rem;
+  }
 
-    .post-description {
-      font-size: 1rem;
-    }
-
-    .post-meta {
-      flex-direction: column;
-      gap: 0.5rem;
-    }
+  :global(.prose th) {
+    background-color: hsl(var(--secondary) / 0.1);
+    font-weight: 600;
   }
 </style>

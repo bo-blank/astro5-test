@@ -1,7 +1,247 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-const pageTitle = "Home Page";
+import { getCollection } from 'astro:content';
+
+const pageTitle = "Digital Divide";
+
+// Get all published posts
+const allPosts = await getCollection('posts', ({ data }) => !data.draft);
+
+// Get featured posts (newest featured first)
+const featuredPosts = allPosts
+  .filter(post => post.data.featured)
+  .sort((a, b) => new Date(b.data.pubDate).getTime() - new Date(a.data.pubDate).getTime());
+
+// Get recent posts (newest first, limit to 6)
+const recentPosts = allPosts
+  .sort((a, b) => new Date(b.data.pubDate).getTime() - new Date(a.data.pubDate).getTime())
+  .slice(0, 6);
+
+// Get unique categories
+const categories = [
+  { name: 'Essay', color: 'bg-purple-500/20 text-purple-400' },
+  { name: 'Article', color: 'bg-blue-500/20 text-blue-400' },
+  { name: 'Review', color: 'bg-red-500/20 text-red-400' },
+  { name: 'Interview', color: 'bg-teal-500/20 text-teal-400' },
+  { name: 'Photo Essay', color: 'bg-orange-500/20 text-orange-400' }
+];
 ---
+
 <BaseLayout pageTitle={pageTitle}>
-  <h2>My awesome blog subtitle</h2>
+  <!-- Hero Section -->
+  <section class="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <!-- Background gradient -->
+    <div class="absolute inset-0 bg-gradient-to-br from-primary/20 via-transparent to-secondary/20 pointer-events-none"></div>
+
+    <!-- Hero content -->
+    <div class="relative z-10 mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-20 text-center">
+      <h1 class="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-foreground mb-6 leading-tight">
+        Digital Divide
+      </h1>
+
+      <p class="text-xl sm:text-2xl text-muted-foreground mb-4 leading-relaxed max-w-2xl mx-auto">
+        Thoughtful essays on culture, technology, and the intersections between
+      </p>
+
+      <p class="text-lg text-muted-foreground/80 mb-8 max-w-2xl mx-auto">
+        Exploring how technology shapes culture and how culture shapes technology. Join us for essays, articles, interviews, and critical perspectives.
+      </p>
+
+      <div class="flex flex-col sm:flex-row gap-4 justify-center mt-10">
+        <a href="/blog" class="inline-flex items-center justify-center px-8 py-3 text-lg font-semibold rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors duration-200">
+          Read Articles
+        </a>
+        <a href="/categories" class="inline-flex items-center justify-center px-8 py-3 text-lg font-semibold rounded-lg border-2 border-primary text-primary hover:bg-primary/5 transition-colors duration-200">
+          Browse Categories
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Posts Section -->
+  {featuredPosts.length > 0 && (
+    <section class="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 bg-secondary/5">
+      <div class="mx-auto max-w-6xl">
+        <div class="mb-12">
+          <h2 class="text-4xl sm:text-5xl font-bold text-foreground mb-3">Featured</h2>
+          <p class="text-lg text-muted-foreground">Our most compelling essays and articles</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {featuredPosts.map((post) => (
+            <a href={`/posts/${post.slug}`} class="group block h-full">
+              <article class="h-full flex flex-col bg-card border border-border/50 rounded-lg overflow-hidden hover:border-primary/50 hover:shadow-lg transition-all duration-300">
+                {post.data.image && (
+                  <div class="relative w-full h-48 overflow-hidden">
+                    <img
+                      src={post.data.image.url}
+                      alt={post.data.image.alt}
+                      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
+                )}
+
+                <div class="flex-1 flex flex-col p-6">
+                  <div class="flex items-center gap-2 mb-3">
+                    <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold uppercase bg-secondary/30 text-secondary">
+                      {post.data.category}
+                    </span>
+                    <span class="text-xs text-muted-foreground">
+                      {new Date(post.data.pubDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
+                    </span>
+                  </div>
+
+                  <h3 class="text-xl sm:text-2xl font-bold text-foreground mb-2 group-hover:text-primary transition-colors duration-200">
+                    {post.data.title}
+                  </h3>
+
+                  <p class="text-muted-foreground mb-4 flex-grow">
+                    {post.data.description}
+                  </p>
+
+                  <div class="text-sm text-primary font-semibold group-hover:translate-x-1 transition-transform duration-200">
+                    Read Article →
+                  </div>
+                </div>
+              </article>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Categories Section -->
+  <section class="py-16 sm:py-20 px-4 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-6xl">
+      <div class="mb-12">
+        <h2 class="text-4xl sm:text-5xl font-bold text-foreground mb-3">Explore by Category</h2>
+        <p class="text-lg text-muted-foreground">Find content that interests you</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+        {categories.map((cat) => {
+          const postCount = allPosts.filter(p => p.data.category === cat.name).length;
+          return (
+            <a href={`/categories/${cat.name.toLowerCase().replace(' ', '-')}`} class="group">
+              <div class={`h-full p-6 rounded-lg border-2 border-border/50 hover:border-primary/50 transition-all duration-200 hover:shadow-lg ${cat.color}`}>
+                <h3 class="text-lg font-bold mb-2">{cat.name}</h3>
+                <p class="text-sm opacity-90">{postCount} {postCount === 1 ? 'article' : 'articles'}</p>
+              </div>
+            </a>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+
+  <!-- Recent Posts Section -->
+  {recentPosts.length > 0 && (
+    <section class="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 bg-secondary/5">
+      <div class="mx-auto max-w-6xl">
+        <div class="mb-12">
+          <h2 class="text-4xl sm:text-5xl font-bold text-foreground mb-3">Latest Articles</h2>
+          <p class="text-lg text-muted-foreground">Recently published posts from our writers</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+          {recentPosts.map((post) => (
+            <a href={`/posts/${post.slug}`} class="group block h-full">
+              <article class="h-full flex flex-col bg-card border border-border/50 rounded-lg overflow-hidden hover:border-primary/50 hover:shadow-lg transition-all duration-300">
+                {post.data.image && (
+                  <div class="relative w-full h-40 overflow-hidden">
+                    <img
+                      src={post.data.image.url}
+                      alt={post.data.image.alt}
+                      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
+                )}
+
+                <div class="flex-1 flex flex-col p-4">
+                  <div class="flex items-center gap-2 mb-2">
+                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold uppercase bg-secondary/30 text-secondary">
+                      {post.data.category}
+                    </span>
+                  </div>
+
+                  <h3 class="text-lg font-bold text-foreground mb-2 group-hover:text-primary transition-colors duration-200 line-clamp-2">
+                    {post.data.title}
+                  </h3>
+
+                  <p class="text-sm text-muted-foreground mb-4 flex-grow line-clamp-2">
+                    {post.data.description}
+                  </p>
+
+                  <div class="flex items-center justify-between text-xs text-muted-foreground">
+                    <span>{new Date(post.data.pubDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}</span>
+                    <span class="text-primary font-semibold group-hover:translate-x-1 transition-transform duration-200">→</span>
+                  </div>
+                </div>
+              </article>
+            </a>
+          ))}
+        </div>
+
+        <div class="text-center">
+          <a href="/blog" class="inline-flex items-center justify-center px-6 py-3 text-lg font-semibold rounded-lg border-2 border-primary text-primary hover:bg-primary/5 transition-colors duration-200">
+            View All Articles
+          </a>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Newsletter Section -->
+  <section class="py-16 sm:py-20 px-4 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-3xl">
+      <div class="bg-gradient-to-r from-primary/10 via-secondary/10 to-primary/10 rounded-2xl border border-border/50 p-8 sm:p-12">
+        <h2 class="text-3xl sm:text-4xl font-bold text-foreground mb-3">Stay Updated</h2>
+        <p class="text-lg text-muted-foreground mb-8">
+          Get notified when we publish new essays and articles on culture and technology.
+        </p>
+
+        <form class="flex flex-col sm:flex-row gap-3">
+          <input
+            type="email"
+            placeholder="Enter your email"
+            class="flex-1 px-4 py-3 rounded-lg bg-card border border-border/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50"
+            required
+          />
+          <button
+            type="submit"
+            class="px-6 py-3 bg-primary text-primary-foreground font-semibold rounded-lg hover:bg-primary/90 transition-colors duration-200 whitespace-nowrap"
+          >
+            Subscribe
+          </button>
+        </form>
+
+        <p class="text-xs text-muted-foreground mt-4">
+          We respect your privacy. No spam, just thoughtful content.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 bg-secondary/5">
+    <div class="mx-auto max-w-3xl text-center">
+      <h2 class="text-3xl sm:text-4xl font-bold text-foreground mb-4">Dive Deeper</h2>
+      <p class="text-lg text-muted-foreground mb-8">
+        Explore our entire collection of essays and start a conversation about the intersections of culture and technology.
+      </p>
+
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="/blog" class="inline-flex items-center justify-center px-8 py-3 text-lg font-semibold rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors duration-200">
+          All Articles
+        </a>
+        <a href="/tags" class="inline-flex items-center justify-center px-8 py-3 text-lg font-semibold rounded-lg border-2 border-primary text-primary hover:bg-primary/5 transition-colors duration-200">
+          Browse by Tags
+        </a>
+        <a href="/about" class="inline-flex items-center justify-center px-8 py-3 text-lg font-semibold rounded-lg border-2 border-border text-foreground hover:bg-secondary/5 transition-colors duration-200">
+          Learn More
+        </a>
+      </div>
+    </div>
+  </section>
 </BaseLayout>
