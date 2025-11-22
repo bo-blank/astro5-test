@@ -33,33 +33,59 @@ const categories = [
 ---
 
 <BaseLayout pageTitle={pageTitle}>
-  <!-- Compact Hero Section -->
-  <section class="relative py-16 sm:py-20 lg:py-24 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="max-w-3xl">
-        <h1 class="text-5xl sm:text-6xl font-bold tracking-tight text-foreground mb-4 leading-tight">
-          Digital Divide
-        </h1>
+  <!-- Featured Hero Section (New Yorker Style) -->
+  {featuredPosts.length > 0 && (
+    <section class="relative min-h-screen lg:min-h-[calc(100vh-64px)] flex items-stretch">
+      <div class="flex-1 flex flex-col justify-center px-4 sm:px-6 lg:px-12 py-12 lg:py-0 bg-background">
+        <div class="max-w-xl">
+          <span class="inline-block text-xs font-bold uppercase tracking-widest text-primary mb-4">
+            {featuredPosts[0].data.category}
+          </span>
 
-        <p class="text-xl sm:text-2xl text-muted-foreground mb-3 leading-relaxed">
-          Thoughtful essays on culture, technology, and the intersections between
-        </p>
+          <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground mb-4 leading-tight">
+            {featuredPosts[0].data.title}
+          </h1>
 
-        <p class="text-lg text-muted-foreground/80 mb-6 max-w-2xl">
-          Exploring how technology shapes culture and how culture shapes technology. Essays, articles, interviews, and critical perspectives.
-        </p>
+          <p class="text-base sm:text-lg text-muted-foreground mb-6 leading-relaxed line-clamp-3">
+            {featuredPosts[0].data.description}
+          </p>
 
-        <div class="flex flex-wrap gap-3">
-          <a href="/blog" class="inline-flex items-center justify-center px-6 py-2.5 text-sm font-semibold rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors duration-200">
-            Read Articles
-          </a>
-          <a href="/categories" class="inline-flex items-center justify-center px-6 py-2.5 text-sm font-semibold rounded-md border border-primary text-primary hover:bg-primary/5 transition-colors duration-200">
-            Browse Categories
+          <div class="flex items-center gap-2 text-sm text-muted-foreground mb-8">
+            <span class="font-semibold text-foreground">By {featuredPosts[0].data.author || 'Staff'}</span>
+            <span>·</span>
+            <span>{new Date(featuredPosts[0].data.pubDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}</span>
+          </div>
+
+          <a href={`/posts/${featuredPosts[0].slug}`} class="inline-flex items-center justify-center px-6 py-3 bg-primary text-primary-foreground font-semibold rounded-md hover:bg-primary/90 transition-colors duration-200">
+            Read Full Story
           </a>
         </div>
       </div>
-    </div>
-  </section>
+
+      {/* Featured Image */}
+      <div class="hidden lg:flex flex-1 items-stretch">
+        {featuredPosts[0].data.image && (
+          <img
+            src={featuredPosts[0].data.image.url}
+            alt={featuredPosts[0].data.image.alt}
+            class="w-full h-full object-cover"
+          />
+        )}
+      </div>
+
+      {/* Mobile Hero Image */}
+      <div class="absolute inset-0 lg:hidden -z-10">
+        {featuredPosts[0].data.image && (
+          <img
+            src={featuredPosts[0].data.image.url}
+            alt={featuredPosts[0].data.image.alt}
+            class="w-full h-full object-cover"
+          />
+        )}
+        <div class="absolute inset-0 bg-background/80"></div>
+      </div>
+    </section>
+  )}
 
   <!-- Today's Mix Section (New Yorker Style) -->
   {todaysMix.length > 0 && (

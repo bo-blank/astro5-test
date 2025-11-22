@@ -4,20 +4,29 @@ import Hamburger from './Hamburger.astro';
 import ThemeToggle from './ThemeToggle.astro';
 ---
 
-<header class="sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b border-border/40">
-    <nav class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
-        <div class="flex items-center gap-4">
-            <a href="/" class="text-xl font-bold text-foreground hover:text-primary transition-colors duration-200">
-                Digital Divide
-            </a>
-        </div>
+<header class="sticky top-0 z-50 bg-background/98 border-b border-border/30">
+    <!-- Top bar with subscription and search -->
+    <div class="border-b border-border/20 px-4 sm:px-6 lg:px-8 py-2 flex justify-end gap-4 text-xs">
+        <a href="#newsletter" class="text-muted-foreground hover:text-foreground transition-colors">
+            Subscribe
+        </a>
+        <button class="text-muted-foreground hover:text-foreground transition-colors">
+            Search
+        </button>
+    </div>
 
-        <div class="hidden md:flex items-center gap-2">
+    <!-- Main navigation bar -->
+    <nav class="mx-auto max-w-full px-4 sm:px-6 lg:px-8 flex items-center justify-between h-14">
+        <a href="/" class="text-2xl font-bold tracking-tight text-foreground hover:text-primary transition-colors duration-200">
+            Digital Divide
+        </a>
+
+        <div class="hidden lg:flex items-center gap-0">
             <Navigation />
         </div>
 
-        <div class="flex items-center gap-2">
-            <div class="md:hidden">
+        <div class="flex items-center gap-3">
+            <div class="lg:hidden">
                 <Hamburger />
             </div>
             <ThemeToggle />
