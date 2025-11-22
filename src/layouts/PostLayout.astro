@@ -20,7 +20,7 @@ const readingTime = Math.ceil(post.body.split(/\s+/).length / 200);
   <article class="mx-auto max-w-prose px-4 sm:px-6 py-8 sm:py-12 animate-fade-in">
     <header class="mb-8 sm:mb-12">
       <div class="flex flex-wrap items-center gap-3 mb-4">
-        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-secondary/20 text-secondary">
+        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-secondary text-secondary-foreground">
           {category}
         </span>
         <time datetime={pubDate.toISOString()} class="text-sm text-muted-foreground">
@@ -35,7 +35,7 @@ const readingTime = Math.ceil(post.body.split(/\s+/).length / 200);
         {title}
       </h1>
 
-      <p class="text-lg sm:text-xl text-muted-foreground/90 italic leading-relaxed mb-6 max-w-2xl">
+      <p class="text-lg sm:text-xl text-muted-foreground italic leading-relaxed mb-6 max-w-2xl">
         {description}
       </p>
 
@@ -45,7 +45,7 @@ const readingTime = Math.ceil(post.body.split(/\s+/).length / 200);
       </div>
     </header>
 
-    <div class="prose prose-sm sm:prose-base prose-invert max-w-none">
+    <div class="prose">
       <slot />
     </div>
 
@@ -55,7 +55,7 @@ const readingTime = Math.ceil(post.body.split(/\s+/).length / 200);
           {tags.map((tag: string) => (
             <a
               href={`/tags/${tag}`}
-              class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium bg-secondary/10 text-secondary hover:bg-secondary/20 border border-secondary/30 hover:border-secondary/50 transition-all duration-200"
+              class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium bg-secondary/50 text-secondary-foreground hover:bg-secondary border border-border/50 hover:border-border transition-all duration-200"
             >
               #{tag}
             </a>
@@ -67,45 +67,52 @@ const readingTime = Math.ceil(post.body.split(/\s+/).length / 200);
 </BaseLayout>
 
 <style>
-  /* Typography improvements for prose content */
-  :global(.prose h2) {
+  /* Prose content styling */
+  .prose :global(h2) {
     font-size: 1.875rem;
+    line-height: 2.25rem;
     font-weight: 700;
-    margin: 1.5rem 0;
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+    color: hsl(var(--foreground));
   }
 
-  :global(.prose h3) {
+  .prose :global(h3) {
     font-size: 1.5rem;
+    line-height: 2rem;
     font-weight: 600;
-    margin: 1rem 0;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    color: hsl(var(--foreground));
   }
 
-  :global(.prose p) {
+  .prose :global(p) {
     margin: 1rem 0;
     line-height: 1.75;
+    color: hsl(var(--foreground) / 0.9);
   }
 
-  :global(.prose ul),
-  :global(.prose ol) {
+  .prose :global(ul),
+  .prose :global(ol) {
     margin: 1rem 0;
     margin-left: 1.5rem;
   }
 
-  :global(.prose li) {
+  .prose :global(li) {
     margin: 0.5rem 0;
   }
 
-  :global(.prose a) {
+  .prose :global(a) {
     color: hsl(var(--primary));
     text-decoration: underline;
-    transition: all 0.2s;
+    transition: all 0.15s;
   }
 
-  :global(.prose a:hover) {
+  .prose :global(a:hover) {
     text-decoration: none;
   }
 
-  :global(.prose blockquote) {
+  .prose :global(blockquote) {
     margin: 1.5rem 0;
     padding-left: 1rem;
     border-left: 4px solid hsl(var(--primary) / 0.5);
@@ -113,42 +120,52 @@ const readingTime = Math.ceil(post.body.split(/\s+/).length / 200);
     font-style: italic;
   }
 
-  :global(.prose code) {
-    background-color: hsl(var(--secondary) / 0.2);
-    padding: 0.375rem 0.75rem;
-    border-radius: 0.375rem;
+  .prose :global(code) {
+    background-color: hsl(var(--muted));
+    padding: 0.125rem 0.375rem;
+    border-radius: 0.25rem;
     font-size: 0.875rem;
-    font-family: 'Courier New', monospace;
+    font-family: var(--font-mono);
   }
 
-  :global(.prose pre) {
-    background-color: hsl(var(--secondary) / 0.2);
+  .prose :global(pre) {
+    background-color: hsl(var(--muted));
     padding: 1rem;
     border-radius: 0.5rem;
     overflow-x: auto;
     margin: 1rem 0;
   }
 
-  :global(.prose pre code) {
+  .prose :global(pre code) {
     background-color: transparent;
     padding: 0;
     border-radius: 0;
   }
 
-  :global(.prose table) {
+  .prose :global(table) {
     width: 100%;
     margin: 1rem 0;
     border-collapse: collapse;
   }
 
-  :global(.prose th),
-  :global(.prose td) {
+  .prose :global(th),
+  .prose :global(td) {
     border: 1px solid hsl(var(--border) / 0.5);
     padding: 0.5rem 1rem;
   }
 
-  :global(.prose th) {
-    background-color: hsl(var(--secondary) / 0.1);
+  .prose :global(th) {
+    background-color: hsl(var(--muted));
     font-weight: 600;
+  }
+
+  .prose :global(img) {
+    border-radius: 0.5rem;
+    margin: 1.5rem 0;
+  }
+
+  .prose :global(hr) {
+    margin: 2rem 0;
+    border-color: hsl(var(--border));
   }
 </style>
